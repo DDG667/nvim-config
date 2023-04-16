@@ -1,5 +1,4 @@
 require'nvim-treesitter.configs'.setup {
-    -- ensure_installed can be "all" or a list of languages { "python", "javascript" }
     ensure_installed = {"python","json","yaml","cpp","cmake","c","markdown","html","go","css","javascript","typescript","vim","bash","git_config","git_rebase","gitcommit","gitignore","markdown_inline"},
 
     highlight = { -- enable highlighting for all file types
@@ -12,8 +11,6 @@ require'nvim-treesitter.configs'.setup {
 
 require("nvim-autopairs").setup()
 require 'nvim-lastplace'.setup()
--- Set barbar's options
--- Require and call setup function somewhere in your init.lua
 require 'bufferline'.setup {
     auto_hide = true,
     tabpages = true,
@@ -29,7 +26,7 @@ require 'bufferline'.setup {
 }
 
 --require('feline').setup()
-require('feline_one_monokai')
+require('one')
 require("nvim-tree").setup({
     sort_by = "case_sensitive",
     view = {
