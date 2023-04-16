@@ -25,3 +25,5 @@ vim.g.python3_host_prog='/data/data/com.termux/files/usr/bin/python3.10'
 vim.g.python_execute='/data/data/com.termux/files/usr/bin/python3.10'
 --vim.g.did_load_filetypes = 1
 vim.g.do_filetype_lua = 1
+vim.g.loaded_perl_provider=0
+vim.g.loaded_ruby_provider=0
