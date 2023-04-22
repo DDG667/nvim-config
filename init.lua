@@ -1,6 +1,8 @@
 
 require('basic')
 require('plugins')
+require('pgcf')
+require('lsp')
 require('autocmd')
 require('keymap')
 

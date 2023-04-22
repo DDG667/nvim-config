@@ -1,4 +1,3 @@
-require('mason').setup()
 vim.diagnostic.config { underline = true, virtual_text = true, signs = true, severity_sort = true, }
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded", })
 local opts = { noremap = true, silent = true }
@@ -8,10 +7,10 @@ vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 local on_attach = function(client, bufnr)
     require "lsp_signature".on_attach({
-      bind = true, -- This is mandatory, otherwise border config won't get registered.
-      handler_opts = {
-        border = "rounded"
-      }
+        bind = true, -- This is mandatory, otherwise border config won't get registered.
+        handler_opts = {
+            border = "rounded"
+        }
     }, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lk', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -94,12 +93,8 @@ local lsp_flags = {
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local lspconfig = require('lspconfig')
-local servers = { 'pyre','tsserver', 'gopls', 'jsonls', 'bashls', 'clangd', 'yamlls', 'html', 'vimls','pyright','taplo'}
-
-require("mason-lspconfig").setup({
-    ensure_installed ={'pyright','html','vimls','bashls','tsserver','gopls','jsonls','yamlls','taplo'},
-    automatic_installation=false
-})
+local servers = { 'tsserver', 'gopls', 'jsonls', 'bashls', 'clangd', 'sqlls', 'yamlls', 'html', 'cssls', 'vimls',
+    'rust_analyzer' }
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {
         capabilities = capabilities,
@@ -125,6 +120,7 @@ lspconfig.pyright.setup {
         disableAutoDetect = true,
     },
 }
+
 lspconfig.lua_ls.setup {
     settings = {
         Lua = {
@@ -136,155 +132,3 @@ lspconfig.lua_ls.setup {
         }
     }
 }
-
-require('lspsaga').setup({
-    debug = false,
-    use_saga_diagnostic_sign = true,
-    error_sign = "",
-    warn_sign = "",
-    hint_sign = "",
-    infor_sign = "",
-    diagnostic_header_icon = "",
-    code_action_icon = "",
-    code_action_prompt = {
-        enable = true,
-        sign = true,
-        sign_priority = 40,
-        virtual_text = true,
-    },
-    finder_definition_icon = " ",
-    finder_reference_icon = " ",
-    max_preview_lines = 10,
-    finder_action_keys = {
-        open = "<CR>",
-        vsplit = "s",
-        split = "i",
-        quit = "<ESC>",
-        scroll_down = "<C-f>",
-        scroll_up = "<C-b>",
-    },
-    code_action_keys = {
-        quit = "<ESC>",
-        exec = "<CR>",
-    },
-    rename_action_keys = {
-        quit = "<ESC>",
-        exec = "<CR>",
-    },
-    definition_preview_icon = "",
-    border_style = "single",
-    rename_prompt_prefix = "➤",
-    rename_output_qflist = {
-        enable = false,
-        auto_open_qflist = false,
-    },
-    server_filetype_map = {},
-    diagnostic_prefix_format = "%d. ",
-    diagnostic_message_format = "%m %c",
-    highlight_prefix = false,
-})
-
-require('lspkind').init({
-    mode = 'symbol_text',
-    preset = 'codicons',
-    symbol_map = {
-        Text = "",
-        Method = "",
-        Function = "",
-        Constructor = "",
-        Field = "ﰠ",
-        Variable = "",
-        Class = "ﴯ",
-        Interface = "",
-        Module = "",
-        Property = "ﰠ",
-        Unit = "塞",
-        Value = "",
-        Enum = "",
-        Keyword = "",
-        Snippet = "",
-        Color = "",
-        File = "",
-        Reference = "",
-        Folder = "",
-        EnumMember = "",
-        Constant = "",
-        Struct = "פּ",
-        Event = "",
-        Operator = "",
-        TypeParameter = ""
-    },
-})
-local lspkind = require('lspkind')
-local luasnip = require('luasnip')
-local cmp = require 'cmp'
-cmp.setup {
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end,
-    },
-    mapping = cmp.mapping.preset.insert({
-        ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
-        ['<C-d>'] = cmp.mapping.scroll_docs(4),  -- Down
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<CR>'] = cmp.mapping.confirm {
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        },
-        ['<Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-        ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-    }),
-    sources = {
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-        { name = 'path' },
-        --{ name = 'nvim_lsp_signature_help' },
-        { name = "buffer",                 keyword_length = 2 },
-        { name = 'nvim_lua' }
-    },
-    formatting = {
-        format = lspkind.cmp_format({
-            mode = 'symbol', -- show only symbol annotations
-            maxwidth = 32,
-            ellipsis_char = '...',
-            before = function(entry, vim_item)
-                return vim_item
-            end
-        })
-    },
-    completion = {
-        keyword_length = 2,
-        completeopt = "menu,noselect",
-    },
-}
-local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-cmp.event:on(
-    'confirm_done',
-    cmp_autopairs.on_confirm_done()
-)
-
-
-
-local signs = { Error = "", Warn = "", Hint = "", Info = "" }
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
