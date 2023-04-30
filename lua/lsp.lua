@@ -94,7 +94,7 @@ local lsp_flags = {
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local lspconfig = require('lspconfig')
-local servers = { 'pyre','tsserver', 'gopls', 'jsonls', 'bashls', 'clangd', 'yamlls', 'html', 'vimls','pyright','taplo'}
+local servers = {'tsserver', 'gopls', 'jsonls', 'bashls', 'clangd', 'yamlls', 'html', 'vimls','pyright','taplo'}
 
 require("mason-lspconfig").setup({
     ensure_installed ={'pyright','html','vimls','bashls','tsserver','gopls','jsonls','yamlls','taplo'},
@@ -270,7 +270,7 @@ cmp.setup {
         })
     },
     completion = {
-        keyword_length = 2,
+        keyword_length = 1,
         completeopt = "menu,noselect",
     },
 }

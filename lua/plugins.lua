@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     { "navarasu/onedark.nvim",              lazy = true },
+    { "ellisonleao/glow.nvim",              config = true,                            cmd = "Glow" },
     { "windwp/nvim-autopairs" },
     { "lukas-reineke/indent-blankline.nvim" },
     { "nvim-treesitter/nvim-treesitter",    dependencies = { "p00f/nvim-ts-rainbow" } },
